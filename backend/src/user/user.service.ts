@@ -21,14 +21,12 @@ export class UserService {
 
 	async byId(id: number) {
 		const user = await this.userRepository.findOne({
-			where: {
-				id
-			},
+			where: { id },
 			relations: {
-				videos: true,
 				subscriptions: {
-					toChannel: true
-				}
+					fromUser: true
+				},
+				videos: true
 			},
 			order: {
 				createdAt: 'DESC'
@@ -63,8 +61,9 @@ export class UserService {
 	}
 
 	async updateProfile(id: number, dto: UserDto) {
+		console.log('id', id)
+		console.log('dto', dto)
 		const user = await this.byId(id)
-
 		const isSameUser = await this.userRepository.findOneBy({ email: dto.email })
 		if (isSameUser && id !== isSameUser.id)
 			throw new BadRequestException('Email занят')
