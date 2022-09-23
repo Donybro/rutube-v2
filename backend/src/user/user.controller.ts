@@ -25,22 +25,21 @@ export class UserController {
 	}
 
 	@Get('by-id/:id')
-	@Auth()
 	async getUser(@Param('id') id: string) {
 		return this.userService.byId(+id)
 	}
 
+	@Put(':id')
 	@UsePipes(new ValidationPipe())
 	@HttpCode(200)
-	@Put(':id')
 	@Auth()
 	async updateUser(@Param('id') id: string, @Body() dto: UserDto) {
 		return this.userService.updateProfile(+id, dto)
 	}
 
+	@Patch('subscribe/:channelId')
 	@UsePipes(new ValidationPipe())
 	@HttpCode(200)
-	@Patch('subscriber/:channelId')
 	@Auth()
 	async subscribeToChannel(
 		@CurrentUser('id') id: number,

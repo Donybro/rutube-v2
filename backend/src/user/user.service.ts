@@ -47,11 +47,8 @@ export class UserService {
 			toChannel: { id: channelId },
 			fromUser: { id }
 		}
-
 		const isSubscribed = await this.subscriptionRepository.findOneBy(data)
-
 		if (!isSubscribed) {
-			// @ts-ignore
 			const newSubscription = await this.subscriptionRepository.create(data)
 			await this.subscriptionRepository.save(newSubscription)
 			return true
